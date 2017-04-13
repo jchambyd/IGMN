@@ -342,6 +342,36 @@ public class IGMN
         return y;
 	}
 	
+        /**
+        * Realiza clusterizacao a partir de um conjunto de dados, onde 
+        * cada instancia e uma coluna da matriz
+        * 
+        * @param dataset o conjunto de dados
+        * @return rotulos para cada instancia do conjunto de dados de entrada
+        */        
+        public SimpleMatrix cluster(SimpleMatrix dataset)
+        {
+                SimpleMatrix out = new SimpleMatrix(dataset.numCols(), 1);
+
+                for(int i = 0; i < dataset.numCols(); i++)
+                {
+                        int index = classifyComponent(dataset.extractVector(false, i));
+                        out.set(i, index);
+                }
+                return out;
+        }
+        
+        /**
+        * Classifica um vetor de entrada 
+        * @param x vetor de entrada
+        * @return indice referente ao componente designado ao vetor de entrada
+        */
+        public int classifyComponent(SimpleMatrix x)
+        {
+                call(x);
+                return MatrixUtil.maxElementIndex(this.post);
+        }
+    
 	/**
 	 * Reinicia a rede
 	 */
